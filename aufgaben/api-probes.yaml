@@ -1,0 +1,36 @@
+# TODO: Konfiguriere produktionsreife Probes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-server
+  namespace: novatech-dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-server
+  template:
+    metadata:
+      labels:
+        app: api-server
+    spec:
+      containers:
+      - name: api
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        # TODO: startupProbe (gibt dem Container Zeit zum Starten)
+        startupProbe:
+          httpGet:
+            path: /
+            port: 80
+          failureThreshold: 30
+          periodSeconds: 10
+
+        # TODO: livenessProbe (erkennt Deadlocks)
+        livenessProbe:
+          # Dein Code hier
+
+        # TODO: readinessProbe (prüft ob ready für Traffic)
+        readinessProbe:
+          # Dein Code hier

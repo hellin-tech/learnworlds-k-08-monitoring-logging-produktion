@@ -1,0 +1,29 @@
+# TODO: Prometheus Alert-Regel
+# Wird als PrometheusRule-CRD im Monitoring-Namespace erstellt
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: novatech-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring  # Muss zum Helm-Release passen
+spec:
+  groups:
+  - name: novatech.rules
+    rules:
+    # Alert: Zu wenige API-Pods
+    - alert: APIServerPodCountLow
+      expr: |
+        kube_deployment_status_replicas_available{
+          namespace="novatech-dev",
+          deployment="api-server"
+        } < 2
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Weniger als 2 API-Pods verfügbar"
+        description: "Deployment api-server hat nur {{ $value }} verfügbare Pods"
+
+    # TODO: Erstelle einen Alert für hohe CPU-Auslastung
+    # - alert: HighCPUUsage
