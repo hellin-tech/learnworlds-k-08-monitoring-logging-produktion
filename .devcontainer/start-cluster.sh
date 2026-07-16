@@ -28,6 +28,13 @@ kubectl apply -f setup/
 echo "Aktiviere Metrics Server ..."
 minikube addons enable metrics-server
 
+echo "Warte auf Metrics Server ..."
+
+kubectl rollout status \
+  deployment/metrics-server \
+  -n kube-system \
+  --timeout=180s
+
 echo "Warte auf Deployment-Bereitschaft ..."
 kubectl wait \
   --for=condition=Available \
