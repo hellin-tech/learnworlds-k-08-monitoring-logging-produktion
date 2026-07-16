@@ -11,8 +11,8 @@ if ! minikube status >/dev/null 2>&1; then
   echo "Starte minikube-Cluster ..."
   minikube start \
     --driver=docker \
-    --cpus=2 \
-    --memory=4096
+    --cpus=3 \
+    --memory=5120
 fi
 
 echo "Warte auf Ready-Status aller Nodes ..."
